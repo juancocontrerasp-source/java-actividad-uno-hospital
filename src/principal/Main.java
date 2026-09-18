@@ -1,10 +1,19 @@
 package principal;
 
-import modelo.*;
+import modelo.Cita;
+import modelo.Hospital;
+import modelo.Medico;
+import modelo.Paciente;
+import vista.MenuPrincipal;
 
 // Clase principal para probar el modelo del hospital
 public class Main {
     public static void main(String[] args) {
+        new MenuPrincipal().iniciar();
+    }
+
+    // Conserva la demostración original del modelo para pruebas rápidas.
+    public static void ejecutarEjemplo() {
         Hospital hospital = new Hospital("Hospital San Gabriel");
 
         // Crear paciente
