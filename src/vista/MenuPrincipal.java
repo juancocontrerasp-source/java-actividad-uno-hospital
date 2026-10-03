@@ -66,8 +66,8 @@ public class MenuPrincipal {
         if (pacientes.buscarPorId(id) != null) { System.out.println("Ya existe un paciente con ese ID."); return; }
         Paciente paciente = new Paciente(id, EntradaConsola.leerTexto("Nombre: "), EntradaConsola.leerTexto("Apellido: "),
                 EntradaConsola.leerTexto("Documento: "), EntradaConsola.leerTexto("Teléfono: "), EntradaConsola.leerEntero("Edad: "));
-        pacientes.guardar(paciente);
-        System.out.println("Paciente registrado correctamente.");
+        if (pacientes.guardar(paciente)) System.out.println("Paciente registrado correctamente.");
+        else System.out.println("No se pudo registrar el paciente. Revise si el ID ya existe y la conexión a MySQL.");
     }
 
     private void buscarPaciente() {
@@ -80,13 +80,14 @@ public class MenuPrincipal {
         if (paciente == null) { System.out.println("No existe un paciente con ese ID."); return; }
         paciente.setNombre(EntradaConsola.leerTexto("Nombre: ")); paciente.setApellido(EntradaConsola.leerTexto("Apellido: "));
         paciente.setDocumento(EntradaConsola.leerTexto("Documento: ")); paciente.setTelefono(EntradaConsola.leerTexto("Teléfono: "));
-        paciente.setEdad(EntradaConsola.leerEntero("Edad: ")); pacientes.actualizar(paciente);
-        System.out.println("Paciente actualizado correctamente.");
+        paciente.setEdad(EntradaConsola.leerEntero("Edad: "));
+        if (pacientes.actualizar(paciente)) System.out.println("Paciente actualizado correctamente.");
+        else System.out.println("No se pudo actualizar el paciente.");
     }
 
     private void eliminarPaciente() {
         if (pacientes.eliminar(EntradaConsola.leerId("ID del paciente: "))) System.out.println("Paciente eliminado correctamente.");
-        else System.out.println("No existe un paciente con ese ID.");
+        else System.out.println("No se eliminó: el paciente no existe o tiene citas asociadas.");
     }
 
     private void menuDoctores() {
@@ -112,7 +113,8 @@ public class MenuPrincipal {
         if (doctores.buscarPorId(id) != null) { System.out.println("Ya existe un doctor con ese ID."); return; }
         Doctor doctor = new Doctor(id, EntradaConsola.leerTexto("Nombre: "), EntradaConsola.leerTexto("Apellido: "),
                 EntradaConsola.leerTexto("Especialidad: "), EntradaConsola.leerTexto("Teléfono: "));
-        doctores.guardar(doctor); System.out.println("Doctor registrado correctamente.");
+        if (doctores.guardar(doctor)) System.out.println("Doctor registrado correctamente.");
+        else System.out.println("No se pudo registrar el doctor. Revise si el ID ya existe y la conexión a MySQL.");
     }
 
     private void buscarDoctor() {
@@ -125,12 +127,13 @@ public class MenuPrincipal {
         if (doctor == null) { System.out.println("No existe un doctor con ese ID."); return; }
         doctor.setNombre(EntradaConsola.leerTexto("Nombre: ")); doctor.setApellido(EntradaConsola.leerTexto("Apellido: "));
         doctor.setEspecialidad(EntradaConsola.leerTexto("Especialidad: ")); doctor.setTelefono(EntradaConsola.leerTexto("Teléfono: "));
-        doctores.actualizar(doctor); System.out.println("Doctor actualizado correctamente.");
+        if (doctores.actualizar(doctor)) System.out.println("Doctor actualizado correctamente.");
+        else System.out.println("No se pudo actualizar el doctor.");
     }
 
     private void eliminarDoctor() {
         if (doctores.eliminar(EntradaConsola.leerId("ID del doctor: "))) System.out.println("Doctor eliminado correctamente.");
-        else System.out.println("No existe un doctor con ese ID.");
+        else System.out.println("No se eliminó: el doctor no existe o tiene citas asociadas.");
     }
 
     private void menuEnfermeras() {
@@ -156,7 +159,8 @@ public class MenuPrincipal {
         if (enfermeras.buscarPorId(id) != null) { System.out.println("Ya existe una enfermera con ese ID."); return; }
         Enfermera enfermera = new Enfermera(id, EntradaConsola.leerTexto("Nombre: "), EntradaConsola.leerTexto("Apellido: "),
                 EntradaConsola.leerTexto("Teléfono: "), EntradaConsola.leerTexto("Turno: "));
-        enfermeras.guardar(enfermera); System.out.println("Enfermera registrada correctamente.");
+        if (enfermeras.guardar(enfermera)) System.out.println("Enfermera registrada correctamente.");
+        else System.out.println("No se pudo registrar la enfermera. Revise si el ID ya existe y la conexión a MySQL.");
     }
 
     private void buscarEnfermera() {
@@ -169,12 +173,13 @@ public class MenuPrincipal {
         if (enfermera == null) { System.out.println("No existe una enfermera con ese ID."); return; }
         enfermera.setNombre(EntradaConsola.leerTexto("Nombre: ")); enfermera.setApellido(EntradaConsola.leerTexto("Apellido: "));
         enfermera.setTelefono(EntradaConsola.leerTexto("Teléfono: ")); enfermera.setTurno(EntradaConsola.leerTexto("Turno: "));
-        enfermeras.actualizar(enfermera); System.out.println("Enfermera actualizada correctamente.");
+        if (enfermeras.actualizar(enfermera)) System.out.println("Enfermera actualizada correctamente.");
+        else System.out.println("No se pudo actualizar la enfermera.");
     }
 
     private void eliminarEnfermera() {
         if (enfermeras.eliminar(EntradaConsola.leerId("ID de la enfermera: "))) System.out.println("Enfermera eliminada correctamente.");
-        else System.out.println("No existe una enfermera con ese ID.");
+        else System.out.println("No se pudo eliminar la enfermera.");
     }
 
     private void menuCitas() {
@@ -206,7 +211,8 @@ public class MenuPrincipal {
         if (citas.buscarPorId(id) != null) { System.out.println("Ya existe una cita con ese ID."); return; }
         Cita cita = new Cita(id, paciente, doctor, EntradaConsola.leerFecha("Fecha (dd/MM/yyyy): "),
                 EntradaConsola.leerHora("Hora (HH:mm): "), EntradaConsola.leerTexto("Motivo: "));
-        citas.guardar(cita); System.out.println("Cita registrada correctamente.");
+        if (citas.guardar(cita)) System.out.println("Cita registrada correctamente.");
+        else System.out.println("No se pudo registrar la cita. Verifique el ID y que existan paciente y doctor.");
     }
 
     private void buscarCita() {
@@ -218,13 +224,14 @@ public class MenuPrincipal {
         Cita cita = citas.buscarPorId(EntradaConsola.leerId("ID de la cita: "));
         if (cita == null) { System.out.println("No existe una cita con ese ID."); return; }
         cita.setFecha(EntradaConsola.leerFecha("Fecha (dd/MM/yyyy): ")); cita.setHora(EntradaConsola.leerHora("Hora (HH:mm): "));
-        cita.setMotivo(EntradaConsola.leerTexto("Motivo: ")); citas.actualizar(cita);
-        System.out.println("Cita actualizada correctamente.");
+        cita.setMotivo(EntradaConsola.leerTexto("Motivo: "));
+        if (citas.actualizar(cita)) System.out.println("Cita actualizada correctamente.");
+        else System.out.println("No se pudo actualizar la cita.");
     }
 
     private void eliminarCita() {
         if (citas.eliminar(EntradaConsola.leerId("ID de la cita: "))) System.out.println("Cita eliminada correctamente.");
-        else System.out.println("No existe una cita con ese ID.");
+        else System.out.println("No existe una cita con ese ID o no se pudo eliminar.");
     }
 
     private void listar(Iterable<?> elementos) {

@@ -21,8 +21,18 @@ public class ConexionBD {
         Path ruta = Paths.get(ARCHIVO_CONFIGURACION);
         try (InputStream entrada = Files.newInputStream(ruta)) {
             propiedades.load(entrada);
+        } catch (IOException e) {
+            throw new SQLException("No se pudo leer " + ARCHIVO_CONFIGURACION + ".", e);
         }
-        return DriverManager.getConnection(propiedades.getProperty("db.url"),
-                propiedades.getProperty("db.user"), propiedades.getProperty("db.password"));
+
+        String url = propiedades.getProperty("db.url", "").trim();
+        String usuario = propiedades.getProperty("db.user", "").trim();
+        String contrasena = propiedades.getProperty("db.password", "").trim();
+        if (!url.startsWith("jdbc:mysql:") || usuario.isEmpty()
+                || contrasena.isEmpty() || contrasena.startsWith("REEMPLAZAR")) {
+            throw new SQLException("Configure db.url, db.user y db.password en "
+                    + ARCHIVO_CONFIGURACION + ".");
+        }
+        return DriverManager.getConnection(url, usuario, contrasena);
     }
 }

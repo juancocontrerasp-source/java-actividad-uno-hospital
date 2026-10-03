@@ -66,6 +66,10 @@ public class Cita {
         this.motivo = motivo;
     }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     // Cambia el estado a CANCELADA
     public void cancelarCita() {
         this.estado = "CANCELADA";

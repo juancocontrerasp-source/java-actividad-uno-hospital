@@ -1,0 +1,3 @@
+db.url=jdbc:mysql://localhost:3306/hospital_san_gabriel?sslMode=DISABLED&allowPublicKeyRetrieval=true&serverTimezone=UTC
+db.user=root
+db.password=CAMBIAR_POR_LA_CONTRASENA_LOCAL
